@@ -79,9 +79,9 @@ class TicketAssigner(Resource):
 			if employee:
 				ticket.employee_id = employee.id
 				try:
-					ticket.save_to_db()
+					ticket.update_to_db()
 				except:
-					return {"message": "An error occurred inserting the item."}, 500
+					ticket.update_to_db()
 
 				return ticket.json()
 

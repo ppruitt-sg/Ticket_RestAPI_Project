@@ -5,34 +5,25 @@ from models.comment import CommentModel
 class TicketModel():
 	filename='data.db'
 
-	# number = db.Column(db.Integer, primary_key=True)
-	# customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'))
-	# employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
-	# subject = db.Column(db.String(100))
-
-	# #responses = db.relationship('ResponseModel', lazy='dynamic')
-	# customer = db.relationship('CustomerModel', lazy=True)
-	# employee = db.relationship('EmployeeModel', lazy=True)
-
-	def __init__(self, customer_id, subject, number=None):
+	def __init__(self, customer_id, subject, number=None, employee_id=None):
 		self.customer_id = customer_id
 		self.subject = subject
 		self.number = number
-		self.employee_id = None
+		self.employee_id = employee_id
 
 
 	def json(self):
 		return {"number": self.number,\
 				"customer_id": self.customer_id,\
-				"subject": self.subject,\
-				"responses": CommentModel.find_by_number(self.number)}
+				"subject": self.subject,
+				"employee_id": self.employee_id}
 
 	@classmethod
 	def find_by_number(cls, number):
 		conn = sqlite3.connect(cls.filename)
 		cursor = conn.cursor()
 
-		query = "SELECT customer_id, subject, number FROM tickets WHERE number=?"
+		query = "SELECT customer_id, subject, number, employee_id FROM tickets WHERE number=?"
 		cursor.execute(query, (number,))
 		row = cursor.fetchone()
 		
@@ -50,6 +41,16 @@ class TicketModel():
 		cursor.execute(query, (self.customer_id, self.subject))
 		self.number = cursor.lastrowid # Ticket number corresponds with row ID
 
+		conn.commit()
+		conn.close()
+
+	def update_to_db(self):
+		conn = sqlite3.connect(self.filename)
+		cursor = conn.cursor()
+
+		query = "UPDATE tickets SET customer_id=?, subject=?, employee_id=? WHERE number=?"
+		cursor.execute(query, (self.customer_id, self.subject, self.employee_id, self.number))
+		
 		conn.commit()
 		conn.close()
 
