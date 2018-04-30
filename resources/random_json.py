@@ -5,5 +5,7 @@ from  models.random_sink import RandomSink
 
 class RandomJSON(Resource):
 	def get(self, amount):
-		emails = RandomSink.get_emails(amount)
-		return jsonify({"email": emails})
+		if amount > 0 and amount <= 1000000:
+			emails = RandomSink.get_emails(amount)
+			return jsonify({"email": emails})
+		return {"message": "Must be between 1 and 1,000,000"}, 404

@@ -6,5 +6,7 @@ from models.random_sink import RandomSink
 
 class RandomCSV(Resource):
 	def get(self, amount):
-		emails = RandomSink.get_emails(amount)
-		return Response("email\n" + "\n".join(emails), mimetype='text/csv')
+		if amount > 0 and amount <= 1000000:
+			emails = RandomSink.get_emails(amount)
+			return Response("email\n" + "\n".join(emails), mimetype='text/csv')
+		return {"message": "Must be between 1 and 1,000,000"}, 404
