@@ -23,7 +23,7 @@ class Comment(Resource):
 			comment = CommentModel(number, timestamp, **data)
 
 			try:
-				comment.save_to_db()
+				comment.add_to_db()
 			except:
 				return {"message": "An error occurred inserting the item."}, 500
 
@@ -35,6 +35,6 @@ class Comment(Resource):
 		comments = CommentModel.find_by_number(number)
 
 		if comments:
-			return {"comments": [r.json() for r in comments]}
+			return {"comments": comments}
 
 		return {"message": "Ticket not found."}
