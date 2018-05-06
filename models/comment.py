@@ -17,6 +17,7 @@ class CommentModel():
 		query = "SELECT number, timestamp, from_email, content FROM comments WHERE number=?"
 		cursor.execute(query, (number,))
 		rows = cursor.fetchall()
+		conn.close()
 
 		if rows:
 			return [CommentModel(*row).json() for row in rows]

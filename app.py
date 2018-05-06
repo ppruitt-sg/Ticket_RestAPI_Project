@@ -34,6 +34,7 @@ api.add_resource(EmployeeTickets, '/employee/<string:email>/tickets')
 api.add_resource(Ticket, '/tickets/<int:number>')
 api.add_resource(TicketCreator, '/tickets/new')
 api.add_resource(TicketAssigner, '/tickets/<int:number>/assign')
+
 api.add_resource(Comment, '/tickets/<int:number>/comment')
 
 

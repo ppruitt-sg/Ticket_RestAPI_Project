@@ -32,6 +32,29 @@ class TicketModel():
 		if row:
 			return cls(*row)
 
+	@classmethod
+	def find_by_email(cls, email, customer):
+		conn = sqlite3.connect(cls.filename)
+		cursor = conn.cursor()
+
+		if customer:
+			query = "SELECT t.customer_id, t.subject, t.number, t.employee_id FROM tickets as t\
+					LEFT JOIN customers as c\
+					ON t.customer_id = c.id\
+					WHERE c.email=?"
+		else:
+			query = "SELECT t.customer_id, t.subject, t.number, t.employee_id FROM tickets as t\
+					LEFT JOIN employees as e\
+					ON t.employee_id = e.id\
+					WHERE e.email=?"
+
+		cursor.execute(query, (email,))
+		rows = cursor.fetchall()
+		
+		conn.close()
+
+		return [cls(*row) for row in rows]
+
 
 	def add_to_db(self):
 		conn = sqlite3.connect(self.filename)

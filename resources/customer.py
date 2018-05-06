@@ -1,6 +1,7 @@
 from flask_restful import Resource, reqparse
 
 from models.customer import CustomerModel
+from models.ticket import TicketModel
 
 class Customer(Resource):
 	parser = reqparse.RequestParser()
@@ -60,5 +61,5 @@ class CustomerTickets(Resource):
 	def get(self, email):
 		customer = CustomerModel.find_by_email(email)
 		if customer:
-			return { "tickets": [ticket.json() for ticket in customer.find_tickets()]}
+			return { "tickets": [ticket.json() for ticket in TicketModel.find_by_email(email, customer=True)]}
 		return { "tickets": []}

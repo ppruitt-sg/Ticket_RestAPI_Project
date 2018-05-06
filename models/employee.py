@@ -23,11 +23,7 @@ class EmployeeModel():
 		conn.close()
 
 		if row:
-			return cls(*row) 
-
-
-	def find_tickets(self):
-		pass
+			return cls(*row)
 
 	def add_to_db(self):
 		conn = sqlite3.connect(self.filename)

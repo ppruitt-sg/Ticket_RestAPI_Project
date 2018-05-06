@@ -55,11 +55,11 @@ class TicketCreator(Resource):
 			timestamp = int(time.time())
 			comment = CommentModel(ticket.number, timestamp, customer.email, data['content'])
 
-			# try:
-			# 	comment.add_to_db()
-			# except:
-			# 	return {"message": "An error occurred inserting the item."}, 500
-			comment.add_to_db()
+			try:
+				comment.add_to_db()
+			except:
+				return {"message": "An error occurred inserting the item."}, 500
+
 			return ticket.json(), 201
 
 		return {"message": "Customer not found"}, 400
@@ -87,3 +87,4 @@ class TicketAssigner(Resource):
 
 			return {"message": "Employee not found"}, 400
 		return {"message": "Ticket not found"}, 404
+
