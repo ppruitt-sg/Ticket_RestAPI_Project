@@ -12,14 +12,21 @@ class User(Resource):
 	)
 
 	def get(self, user_type, email):
-		user = UserModel.find_by_email(user_type, email)
+		try:
+			user = UserModel.find_by_email(user_type, email)
+		except:
+			return {}, 404
+
 		if user:
 			return user.json()
 		return {'message': 'Email not found'}, 404
 
 	def post(self, user_type, email):
-		if UserModel.find_by_email(user_type, email):
-			return {'message': "Email '{}' already exists.".format(email)}, 400
+		try:
+			if UserModel.find_by_email(user_type, email):
+				return {'message': "Email '{}' already exists.".format(email)}, 400
+		except:
+			return {}, 404
 
 		data = User.parser.parse_args()
 
@@ -34,7 +41,11 @@ class User(Resource):
 
 
 	def patch(self, user_type, email):
-		user = UserModel.find_by_email(user_type, email)
+		try:
+			user = UserModel.find_by_email(user_type, email)
+		except:
+			return {}, 404
+
 		if user:
 			data = User.parser.parse_args()
 			user.name = data['name']
@@ -51,7 +62,11 @@ class User(Resource):
 
 
 	def delete(self, user_type, email):
-		user = UserModel.find_by_email(user_type, email)
+		try:
+			user = UserModel.find_by_email(user_type, email)
+		except:
+			return {}, 404
+
 		if user:
 			user.delete_from_db()
 
@@ -59,7 +74,11 @@ class User(Resource):
 
 class UserTickets(Resource):
 	def get(self, user_type, email):
-		user = UserModel.find_by_email(user_type, email)
+		try:
+			user = UserModel.find_by_email(user_type, email)
+		except:
+			return {}, 404
+
 		if user_type == "customer":
 			is_customer = True
 		else:
