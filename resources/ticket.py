@@ -1,8 +1,7 @@
 import time
 from flask_restful import Resource, reqparse
 
-from models.customer import CustomerModel
-from models.employee import EmployeeModel
+from models.user import UserModel
 from models.ticket import TicketModel
 from models.comment import CommentModel
 
@@ -39,7 +38,7 @@ class TicketCreator(Resource):
 
 	def post(self):
 		data = TicketCreator.parser.parse_args()
-		customer = CustomerModel.find_by_email(data['customer'])
+		customer = UserModel.find_by_email("customer", data['customer'])
 
 		# Check if username exists
 		if customer:
@@ -75,7 +74,7 @@ class TicketAssigner(Resource):
 		ticket = TicketModel.find_by_number(number)
 		if ticket:
 			data = TicketAssigner.parser.parse_args()
-			employee = EmployeeModel.find_by_email(data['employee'])
+			employee = UserModel.find_by_email("employee", data['employee'])
 			if employee:
 				ticket.employee_id = employee.id
 				try:
