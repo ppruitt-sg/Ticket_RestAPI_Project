@@ -12,25 +12,27 @@ class User(Resource):
 	)
 
 	def get(self, user_type, email):
-		try:
-			user = UserModel.find_by_email(user_type, email)
-		except:
+		if User.validate_input(user_type) == False:
 			return {}, 404
+		is_customer = User.is_customer(user_type)
+		user = UserModel.find_by_email(email, is_customer)
+			
 
 		if user:
-			return user.json()
+			return user.json(), 200
 		return {'message': 'Email not found'}, 404
 
 	def post(self, user_type, email):
-		try:
-			if UserModel.find_by_email(user_type, email):
-				return {'message': "Email '{}' already exists.".format(email)}, 400
-		except:
+		if User.validate_input(user_type) == False:
 			return {}, 404
+		is_customer = User.is_customer(user_type)
+		user = UserModel.find_by_email(email, is_customer)
+
+		if user:
+			return {"message": "User already exists"}, 404
 
 		data = User.parser.parse_args()
-
-		user = UserModel(email, data['name'], user_type=user_type)
+		user = UserModel(email, data['name'], is_customer=(email=="customer"))
 		
 		try:
 			user.add_to_db()
@@ -41,10 +43,10 @@ class User(Resource):
 
 
 	def patch(self, user_type, email):
-		try:
-			user = UserModel.find_by_email(user_type, email)
-		except:
+		if User.validate_input(user_type) == False:
 			return {}, 404
+		is_customer = User.is_customer(user_type)
+		user = UserModel.find_by_email(email, is_customer)
 
 		if user:
 			data = User.parser.parse_args()
@@ -59,30 +61,37 @@ class User(Resource):
 
 		return {'message': 'Email not found'}, 404
 
-
-
 	def delete(self, user_type, email):
-		try:
-			user = UserModel.find_by_email(user_type, email)
-		except:
+		if User.validate_input(user_type) == False:
 			return {}, 404
+		is_customer = User.is_customer(user_type)
+		user = UserModel.find_by_email(email, is_customer)
 
 		if user:
 			user.delete_from_db()
 
 		return {"message": "Email deleted"}
 
+	@classmethod
+	def is_customer(cls, user_type):
+		if user_type == "employee":
+			return False
+		if user_type == "customer":
+			return True
+
+	@classmethod
+	def validate_input(cls, user_type):
+		if user_type != "employee" and user_type != "customer":
+			return False
+
+
+
 class UserTickets(Resource):
 	def get(self, user_type, email):
-		try:
-			user = UserModel.find_by_email(user_type, email)
-		except:
+		if User.validate_input(user_type) == False:
 			return {}, 404
-
-		if user_type == "customer":
-			is_customer = True
-		else:
-			is_customer = False
+		is_customer = User.is_customer(user_type)
+		user = UserModel.find_by_email(email, is_customer)
 		
 		if user:
 			return { "tickets": [ticket.json() for ticket in TicketModel.find_by_email(email, is_customer)]}

@@ -33,20 +33,19 @@ class TicketModel():
 			return cls(*row)
 
 	@classmethod
-	def find_by_email(cls, email, customer):
+	def find_by_email(cls, email, is_customer):
 		conn = sqlite3.connect(cls.filename)
 		cursor = conn.cursor()
 
-		if customer:
-			query = "SELECT t.customer_id, t.subject, t.number, t.employee_id FROM tickets as t\
-					LEFT JOIN customers as c\
-					ON t.customer_id = c.id\
-					WHERE c.email=?"
+		if is_customer:
+			table_name = "customers"
 		else:
-			query = "SELECT t.customer_id, t.subject, t.number, t.employee_id FROM tickets as t\
-					LEFT JOIN employees as e\
-					ON t.employee_id = e.id\
-					WHERE e.email=?"
+			table_name = "employees"
+
+		query = "SELECT t.customer_id, t.subject, t.number, t.employee_id FROM tickets as t\
+				LEFT JOIN {} as u\
+				ON t.customer_id = u.id\
+				WHERE u.email=?".format(table_name)
 
 		cursor.execute(query, (email,))
 		rows = cursor.fetchall()
