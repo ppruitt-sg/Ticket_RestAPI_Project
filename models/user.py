@@ -11,7 +11,7 @@ class UserModel():
 		self.is_customer=is_customer
 
 	def json(self):
-		return {'email': self.email, 'name': self.name}
+		return {'id': self.id, 'email': self.email, 'name': self.name}
 
 	@classmethod
 	def find_by_email(cls, email, is_customer):
@@ -31,8 +31,23 @@ class UserModel():
 		if row:
 			return cls(*row, is_customer) # row[0], row[1], row[2] are email, name, id
 
-	def find_tickets(self):
-		pass
+	@classmethod
+	def find_by_id(cls, id, is_customer):
+		if is_customer:
+			table_name = "customers"
+		else:
+			table_name = "employees"
+
+		conn = sqlite3.connect(cls.filename)
+		cursor = conn.cursor()
+
+		query = "SELECT email, name, id FROM {} WHERE id=?".format(table_name)
+		cursor.execute(query, (id,))
+		row = cursor.fetchone()
+		conn.close()
+
+		if row:
+			return cls(*row, is_customer) # row[0], row[1], row[2] are email, name, id
 
 	def add_to_db(self):
 		if self.is_customer:
@@ -45,6 +60,7 @@ class UserModel():
 
 		query = "INSERT INTO {} (email, name) VALUES (?, ?)".format(table_name)
 		cursor.execute(query, (self.email, self.name))
+		self.id = cursor.lastrowid
 
 		conn.commit()
 		conn.close()

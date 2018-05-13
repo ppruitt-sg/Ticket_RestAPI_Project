@@ -38,7 +38,7 @@ class TicketCreator(Resource):
 
 	def post(self):
 		data = TicketCreator.parser.parse_args()
-		customer = UserModel.find_by_email("customer", data['customer'])
+		customer = UserModel.find_by_email(data['customer'], is_customer=True)
 
 		# Check if username exists
 		if customer:

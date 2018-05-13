@@ -39,13 +39,15 @@ class TicketModel():
 
 		if is_customer:
 			table_name = "customers"
+			user_type = "customer"
 		else:
 			table_name = "employees"
+			user_type = "employee"
 
 		query = "SELECT t.customer_id, t.subject, t.number, t.employee_id FROM tickets as t\
 				LEFT JOIN {} as u\
-				ON t.customer_id = u.id\
-				WHERE u.email=?".format(table_name)
+				ON t.{}_id = u.id\
+				WHERE u.email=?".format(table_name, user_type)
 
 		cursor.execute(query, (email,))
 		rows = cursor.fetchall()
