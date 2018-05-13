@@ -11,10 +11,7 @@ class User(Resource):
 		help="This field cannot be blank!"
 	)
 
-	def get(self, user_type, id):
-		if User.validate_input(user_type) == False:
-			return {}, 404
-		is_customer = User.is_customer(user_type)
+	def get(self, id, is_customer):
 		user = UserModel.find_by_id(id, is_customer)
 
 		if user:
@@ -22,10 +19,7 @@ class User(Resource):
 		return {'message': 'ID not found'}, 404
 
 
-	def patch(self, user_type, id):
-		if User.validate_input(user_type) == False:
-			return {}, 404
-		is_customer = User.is_customer(user_type)
+	def patch(self, id, is_customer):
 		user = UserModel.find_by_id(id, is_customer)
 
 		if user:
@@ -41,10 +35,7 @@ class User(Resource):
 
 		return {'message': 'Email not found'}, 404
 
-	def delete(self, user_type, id):
-		if User.validate_input(user_type) == False:
-			return {}, 404
-		is_customer = User.is_customer(user_type)
+	def delete(self, id, is_customer):
 		user = UserModel.find_by_id(id, is_customer)
 
 		if user:
@@ -52,39 +43,24 @@ class User(Resource):
 
 		return {"message": "Email deleted"}
 
-	@classmethod
-	def is_customer(cls, user_type):
-		if user_type == "employee":
-			return False
-		if user_type == "customer":
-			return True
-
-	@classmethod
-	def validate_input(cls, user_type):
-		if user_type != "employee" and user_type != "customer":
-			return False
 
 class UserTickets(Resource):
-	def get(self, user_type, email):
-		if User.validate_input(user_type) == False:
-			return {}, 404
-		is_customer = User.is_customer(user_type)
+	def get(self, email, is_customer):
 		user = UserModel.find_by_email(email, is_customer)
 		
 		if user:
 			return { "tickets": [ticket.json() for ticket in TicketModel.find_by_email(email, is_customer)]}
 		return { "tickets": []}
 
+
 class UserEmail(Resource):
-	def get(self, user_type, email):
-		if User.validate_input(user_type) == False:
-			return {}, 404
-		is_customer = User.is_customer(user_type)
+	def get(self, email, is_customer):
 		user = UserModel.find_by_email(email, is_customer)
 
 		if user:
 			return user.json(), 200
 		return {'message': 'email not found'}, 404
+
 
 class UserCreator(Resource):
 	parser = reqparse.RequestParser()
@@ -99,11 +75,7 @@ class UserCreator(Resource):
 		help="This field cannot be blank!"
 	)
 
-	def post(self, user_type):
-		if User.validate_input(user_type) == False:
-			return {}, 404
-		is_customer = User.is_customer(user_type)
-		
+	def post(self, is_customer):
 		data = UserCreator.parser.parse_args()
 
 		user = UserModel.find_by_email(data['email'], is_customer)
