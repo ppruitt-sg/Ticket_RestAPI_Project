@@ -79,7 +79,7 @@ class TicketAssigner(Resource):
 		if ticket:
 			# Checks if ticket exists
 			data = TicketAssigner.parser.parse_args()
-			employee = UserModel.find_by_email("employee", data['employee'])
+			employee = UserModel.find_by_email(data['employee'], is_customer=False)
 			if employee:
 				# Checks if employee exists
 				ticket.employee_id = employee.id
@@ -89,7 +89,7 @@ class TicketAssigner(Resource):
 					ticket.update_to_db()
 
 				return ticket.json()
-				
+
 
 			return {"message": "Employee not found"}, 400
 		return {"message": "Ticket not found"}, 404
