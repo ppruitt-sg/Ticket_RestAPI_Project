@@ -2,7 +2,7 @@ import os
 
 from flask import Flask
 from flask_restful import Api, reqparse
-from flask_limiter import Limiter
+#from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
 from resources.random_json import RandomJSON
@@ -15,8 +15,8 @@ from resources.comment import Comment, CommentAdder
 
 
 app = Flask(__name__)
-limiter = Limiter(default_limits=["1000/hour"], key_func=get_remote_address, headers_enabled=True)
-limiter.init_app(app)
+#limiter = Limiter(default_limits=["1000/hour"], key_func=get_remote_address, headers_enabled=True)
+#limiter.init_app(app)
 app.secret_key = 'poul'
 api = Api(app)
 
