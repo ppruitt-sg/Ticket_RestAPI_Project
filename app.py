@@ -9,7 +9,7 @@ from resources.random_csv import RandomCSV
 from resources.employee import Employee, EmployeeTickets, EmployeeEmail, EmployeeCreator
 from resources.customer import Customer, CustomerTickets, CustomerEmail, CustomerCreator
 from resources.ticket import Ticket, TicketCreator, TicketAssigner
-from resources.comment import Comment
+from resources.comment import Comment, CommentAdder
 
 
 app = Flask(__name__)
@@ -39,7 +39,8 @@ api.add_resource(Ticket, '/tickets/<int:number>')
 api.add_resource(TicketCreator, '/tickets/new')
 api.add_resource(TicketAssigner, '/tickets/<int:number>/assign')
 
-api.add_resource(Comment, '/tickets/<int:number>/comment')
+api.add_resource(CommentAdder, '/tickets/<int:number>/comment')
+api.add_resource(Comment, '/tickets/<int:number>/comments')
 
 
 if __name__ == '__main__':

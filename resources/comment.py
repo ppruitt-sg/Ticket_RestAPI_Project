@@ -4,7 +4,7 @@ import time
 from models.ticket import TicketModel
 from models.comment import CommentModel
 
-class Comment(Resource):
+class CommentAdder(Resource):
 	parser = reqparse.RequestParser()
 	parser.add_argument('from_email',
 		type=str,
@@ -17,7 +17,7 @@ class Comment(Resource):
 
 	def patch(self, number):
 		# Adds comment to ticket
-		data = Comment.parser.parse_args()
+		data = CommentAdder.parser.parse_args()
 		ticket = TicketModel.find_by_number(number)
 		if ticket:
 			timestamp = int(time.time())
@@ -32,6 +32,7 @@ class Comment(Resource):
 
 		return {"message": "Ticket not found"}, 400
 
+class Comment(Resource):
 	def get(self, number):
 		# Gets all comments for the ticket
 		comments = CommentModel.find_by_number(number)
