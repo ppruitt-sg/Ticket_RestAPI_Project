@@ -33,7 +33,7 @@ class User(Resource):
 
 			return user.json(), 201
 
-		return {'message': 'Email not found'}, 404
+		return {'message': 'ID not found'}, 404
 
 	def delete(self, id, is_customer):
 		user = UserModel.find_by_id(id, is_customer)
@@ -41,7 +41,7 @@ class User(Resource):
 		if user:
 			user.delete_from_db()
 
-		return {"message": "Email deleted"}
+		return {"message": "User deleted"}
 
 
 class UserTickets(Resource):
@@ -59,7 +59,7 @@ class UserEmail(Resource):
 
 		if user:
 			return user.json(), 200
-		return {'message': 'email not found'}, 404
+		return {'message': 'Email not found'}, 404
 
 
 class UserCreator(Resource):
