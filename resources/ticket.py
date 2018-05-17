@@ -10,12 +10,14 @@ from resources.comment import Comment
 class Ticket(Resource):
 
 	def get(self, number):
+		# Returns ticket with that specific number
 		ticket = TicketModel.find_by_number(number)
 		if ticket:
 			return ticket.json()
 		return {'message': 'Ticket not found'}, 404
 
 	def delete(self, number):
+		# Deletes ticket if it exists
 		ticket = TicketModel.find_by_number(number)
 		if ticket:
 			ticket.delete_from_db()
@@ -37,6 +39,7 @@ class TicketCreator(Resource):
 		help="Customer email is required.")
 
 	def post(self):
+		# Creates new tickets
 		data = TicketCreator.parser.parse_args()
 		customer = UserModel.find_by_email(data['customer'], is_customer=True)
 
@@ -71,11 +74,14 @@ class TicketAssigner(Resource):
 		help="Email is required")
 
 	def patch(self, number):
+		# Assigns employee to specific ticket, if it exists
 		ticket = TicketModel.find_by_number(number)
 		if ticket:
+			# Checks if ticket exists
 			data = TicketAssigner.parser.parse_args()
 			employee = UserModel.find_by_email("employee", data['employee'])
 			if employee:
+				# Checks if employee exists
 				ticket.employee_id = employee.id
 				try:
 					ticket.update_to_db()
@@ -83,6 +89,7 @@ class TicketAssigner(Resource):
 					ticket.update_to_db()
 
 				return ticket.json()
+				
 
 			return {"message": "Employee not found"}, 400
 		return {"message": "Ticket not found"}, 404

@@ -16,6 +16,7 @@ class Comment(Resource):
 		help="Comment content must be included.")
 
 	def patch(self, number):
+		# Adds comment to ticket
 		data = Comment.parser.parse_args()
 		ticket = TicketModel.find_by_number(number)
 		if ticket:
@@ -32,6 +33,7 @@ class Comment(Resource):
 		return {"message": "Ticket not found"}, 400
 
 	def get(self, number):
+		# Gets all comments for the ticket
 		comments = CommentModel.find_by_number(number)
 
 		if comments:

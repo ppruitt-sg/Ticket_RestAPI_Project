@@ -54,7 +54,6 @@ class UserModel():
 			return cls(row[0], row[1], is_customer, row[2]) # row[0], row[1], row[2] are email, name, id
 
 	def add_to_db(self):
-
 		conn = sqlite3.connect(self.filename)
 		cursor = conn.cursor()
 

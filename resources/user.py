@@ -46,6 +46,7 @@ class User(Resource):
 
 class UserTickets(Resource):
 	def get(self, email, is_customer):
+		# Returns tickets that the employee/customer is assigned to
 		user = UserModel.find_by_email(email, is_customer)
 		
 		if user:
@@ -55,6 +56,7 @@ class UserTickets(Resource):
 
 class UserEmail(Resource):
 	def get(self, email, is_customer):
+		# Returns employee/customer that matches this email address
 		user = UserModel.find_by_email(email, is_customer)
 
 		if user:
@@ -76,6 +78,7 @@ class UserCreator(Resource):
 	)
 
 	def post(self, is_customer):
+		#Creates new employee/customer if one with that email does not exist.
 		data = UserCreator.parser.parse_args()
 
 		user = UserModel.find_by_email(data['email'], is_customer)
