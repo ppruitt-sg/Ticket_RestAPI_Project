@@ -26,7 +26,7 @@ class CommentAdder(Resource):
 
             try:
                 comment.add_to_db()
-            except:
+            except IntegrityError:
                 return {"message":
                         "An error occurred inserting the item."}, 500
 

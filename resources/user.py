@@ -28,7 +28,7 @@ class User(Resource):
 
             try:
                 user.update_to_db()
-            except:
+            except IntegrityError:
                 return {"message":
                         "An error occurred inserting the item."}, 500
 
@@ -93,7 +93,7 @@ class UserCreator(Resource):
 
         try:
             user.add_to_db()
-        except:
+        except IntegrityError:
             return {"message": "An error occurred inserting the item."}, 500
 
         return user.json(), 201

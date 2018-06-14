@@ -54,7 +54,7 @@ class TicketCreator(Resource):
 
             try:
                 ticket.add_to_db()
-            except:
+            except IntegrityError:
                 return {"message":
                         "An error occurred inserting the item."}, 500
 
@@ -65,7 +65,7 @@ class TicketCreator(Resource):
 
             try:
                 comment.add_to_db()
-            except:
+            except IntegrityError:
                 return {"message":
                         "An error occurred inserting the item."}, 500
 
@@ -94,7 +94,7 @@ class TicketAssigner(Resource):
                 ticket.employee_id = employee.id
                 try:
                     ticket.update_to_db()
-                except:
+                except IntegrityError:
                     ticket.update_to_db()
 
                 return ticket.json()
