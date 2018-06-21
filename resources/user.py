@@ -17,7 +17,7 @@ class User(Resource):
 
         if user:
             return user.json(), 200
-        return {'message': 'ID not found'}, 404
+        return {'message': 'User not found.'}, 404
 
     def patch(self, id, is_customer):
         user = UserModel.find_by_id(id, is_customer)
@@ -34,7 +34,7 @@ class User(Resource):
 
             return user.json(), 201
 
-        return {'message': 'ID not found'}, 404
+        return {'message': 'User not found'}, 404
 
     def delete(self, id, is_customer):
         user = UserModel.find_by_id(id, is_customer)
@@ -65,7 +65,8 @@ class UserEmail(Resource):
 
         if user:
             return user.json(), 200
-        return {'message': 'Email not found'}, 404
+            
+        return {'message': 'User not found'}, 404
 
 
 class UserCreator(Resource):
@@ -89,6 +90,7 @@ class UserCreator(Resource):
 
         if user:
             return {"message": "User already exists"}, 404
+
         user = UserModel(data['email'], data['name'], is_customer=is_customer)
 
         try:

@@ -20,7 +20,7 @@ class AccountModel():
         conn = sqlite3.connect(self.filename)
         cursor = conn.cursor()
 
-        query = "INSERT INTO auth (username, password) VALUES (?, ?)"
+        query = "INSERT INTO accounts (username, password) VALUES (?, ?)"
         cursor.execute(query, (self.username, self.password))
         self.id = cursor.lastrowid
 
@@ -32,7 +32,7 @@ class AccountModel():
         conn = sqlite3.connect(self.filename)
         cursor = conn.cursor()
 
-        query = "DELETE FROM auth WHERE id=?"
+        query = "DELETE FROM accounts WHERE id=?"
         cursor.execute(query, (self.id,))
 
         conn.commit()
@@ -43,7 +43,7 @@ class AccountModel():
         conn = sqlite3.connect(cls.filename)
         cursor = conn.cursor()
 
-        query = "SELECT username, password, id FROM auth WHERE username=?"
+        query = "SELECT username, password, id FROM accounts WHERE username=?"
         cursor.execute(query, (username,))
         row = cursor.fetchone()
         conn.close()
@@ -56,7 +56,7 @@ class AccountModel():
         conn = sqlite3.connect(cls.filename)
         cursor = conn.cursor()
 
-        query = "SELECT username, password, id FROM auth WHERE id=?"
+        query = "SELECT username, password, id FROM accounts WHERE id=?"
         cursor.execute(query, (id,))
         row = cursor.fetchone()
         conn.close()

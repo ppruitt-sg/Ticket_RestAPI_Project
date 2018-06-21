@@ -35,7 +35,7 @@ create_table = "CREATE TABLE IF NOT EXISTS comments (\
                     tickets(number) ON DELETE CASCADE)"
 cursor.execute(create_table)
 
-create_table = "CREATE TABLE IF NOT EXISTS auth (\
+create_table = "CREATE TABLE IF NOT EXISTS accounts (\
                     id INTEGER PRIMARY KEY AUTOINCREMENT,\
                     username text,\
                     password text)"

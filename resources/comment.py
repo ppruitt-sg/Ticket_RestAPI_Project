@@ -32,7 +32,7 @@ class CommentAdder(Resource):
 
             return comment.json(), 202
 
-        return {"message": "Ticket not found"}, 400
+        return {"message": "Ticket not found."}, 400
 
 
 class Comment(Resource):

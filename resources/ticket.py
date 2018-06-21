@@ -85,17 +85,18 @@ class TicketAssigner(Resource):
         # Assigns employee to specific ticket, if it exists
         ticket = TicketModel.find_by_number(number)
         if ticket:
-            # Checks if ticket exists
+        # Checks if ticket exists
             data = TicketAssigner.parser.parse_args()
             employee = UserModel.find_by_email(
                 data['employee'], is_customer=False)
             if employee:
-                # Checks if employee exists
+            # Checks if employee exists
                 ticket.employee_id = employee.id
                 try:
                     ticket.update_to_db()
                 except IntegrityError:
-                    ticket.update_to_db()
+                    return {"message":
+                        "An error occurred inserting the item."}, 500
 
                 return ticket.json()
 
