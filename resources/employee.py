@@ -17,8 +17,8 @@ class Employee(User):
 
 class EmployeeTickets(UserTickets):
 
-    def get(self, email):
-        return super().get(email, is_customer=False)
+    def get(self, id):
+        return super().get(id, is_customer=False)
 
 
 class EmployeeEmail(UserEmail):

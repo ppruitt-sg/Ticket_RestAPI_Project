@@ -45,12 +45,12 @@ api.add_resource(RandomCSV, '/random/csv/<int:amount>')
 
 # Ticket API
 api.add_resource(Customer, '/customer/<int:id>')
-api.add_resource(CustomerTickets, '/customer/<string:email>/tickets')
+api.add_resource(CustomerTickets, '/customer/<int:id>/tickets')
 api.add_resource(CustomerEmail, '/customer/email/<string:email>')
 api.add_resource(CustomerCreator, '/customer')
 
 api.add_resource(Employee, '/employee/<int:id>')
-api.add_resource(EmployeeTickets, '/employee/<string:email>/tickets')
+api.add_resource(EmployeeTickets, '/employee/<int:id>/tickets')
 api.add_resource(EmployeeEmail, '/employee/email/<string:email>')
 api.add_resource(EmployeeCreator, '/employee')
 

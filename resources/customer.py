@@ -17,8 +17,8 @@ class Customer(User):
 
 class CustomerTickets(UserTickets):
 
-    def get(self, email):
-        return super().get(email, is_customer=True)
+    def get(self, id):
+        return super().get(id, is_customer=True)
 
 
 class CustomerEmail(UserEmail):

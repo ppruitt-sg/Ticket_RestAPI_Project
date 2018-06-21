@@ -34,7 +34,7 @@ class UserModel():
         row = cursor.fetchone()
         conn.close()
 
-        if row:
+        if len(row) > 0:
             # row[0], row[1], row[2] are email, name, id
             return cls(row[0], row[1], is_customer, row[2])
 
@@ -53,7 +53,7 @@ class UserModel():
         row = cursor.fetchone()
         conn.close()
 
-        if row:
+        if row != None:
             # row[0], row[1], row[2] are email, name, id
             return cls(row[0], row[1], is_customer, row[2])
 

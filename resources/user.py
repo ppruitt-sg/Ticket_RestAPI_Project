@@ -47,14 +47,14 @@ class User(Resource):
 
 class UserTickets(Resource):
 
-    def get(self, email, is_customer):
+    def get(self, id, is_customer):
         # Returns tickets that the employee/customer is assigned to
-        user = UserModel.find_by_email(email, is_customer)
+        user = UserModel.find_by_id(id, is_customer)
 
         if user:
             return {"tickets": [ticket.json() for ticket
-                    in TicketModel.find_by_email(email, is_customer)]}
-        return {"tickets": []}
+                    in TicketModel.find_by_email(user.email, is_customer)]}
+        return {"message": "User not found"}
 
 
 class UserEmail(Resource):
@@ -65,7 +65,7 @@ class UserEmail(Resource):
 
         if user:
             return user.json(), 200
-            
+
         return {'message': 'User not found'}, 404
 
 
