@@ -11,6 +11,7 @@ class Employee(User):
     def patch(self, id):
         return super().patch(id, is_customer=False)
 
+    @jwt_required
     def delete(self, id):
         return super().delete(id, is_customer=False)
 
